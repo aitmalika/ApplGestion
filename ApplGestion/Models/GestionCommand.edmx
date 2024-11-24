@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GestionCommande2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="CIN" />
+          </Key>
+          <Property Name="CIN" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="30" />
+          <Property Name="Prenom" Type="varchar" MaxLength="30" />
+          <Property Name="Ville" Type="varchar" MaxLength="30" />
+          <Property Name="Telephone" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="Num_cmd" />
+          </Key>
+          <Property Name="Num_cmd" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CIN" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Datecmd" Type="datetime" />
+        </EntityType>
+        <EntityType Name="connextion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Utilisateur" Type="varchar" MaxLength="30" />
+          <Property Name="MotdePasse" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <!--Erreurs détectées durant la génération :
+avertissement 6002: La table/vue 'GestionCommande2.dbo.DetailsCommande' n'a pas de clé primaire définie. La clé a été déduite et la définition a été créée en tant que table/vue en lecture seule.-->
+        <EntityType Name="DetailsCommande">
+          <Key>
+            <PropertyRef Name="Num_cmd" />
+            <PropertyRef Name="RefProduit" />
+            <PropertyRef Name="Quantite" />
+            <PropertyRef Name="CIN" />
+          </Key>
+          <Property Name="Num_cmd" Type="int" Nullable="false" />
+          <Property Name="RefProduit" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="CIN" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Produit">
+          <Key>
+            <PropertyRef Name="Refproduit" />
+          </Key>
+          <Property Name="Refproduit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Intitule" Type="varchar" MaxLength="50" />
+          <Property Name="Categorie" Type="varchar" MaxLength="50" />
+          <Property Name="PrixVente" Type="decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Commande__CIN__286302EC">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="CIN" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="CIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsCo__Num_c__2C3393D0">
+          <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="Num_cmd" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="Num_cmd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsCo__RefPr__2D27B809">
+          <End Role="Produit" Type="Self.Produit" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produit">
+              <PropertyRef Name="Refproduit" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="RefProduit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsComm__CIN__47DBAE45">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="CIN" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="CIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestionCommande2ModelStoreContainer">
+          <EntitySet Name="client" EntityType="Self.client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="connextion" EntityType="Self.connextion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produit" EntityType="Self.Produit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetailsCommande" EntityType="Self.DetailsCommande" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DetailsCommande].[Num_cmd] AS [Num_cmd], 
+    [DetailsCommande].[RefProduit] AS [RefProduit], 
+    [DetailsCommande].[Quantite] AS [Quantite], 
+    [DetailsCommande].[CIN] AS [CIN]
+    FROM [dbo].[DetailsCommande] AS [DetailsCommande]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Commande__CIN__286302EC" Association="Self.FK__Commande__CIN__286302EC">
+            <End Role="client" EntitySet="client" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsCo__Num_c__2C3393D0" Association="Self.FK__DetailsCo__Num_c__2C3393D0">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsCo__RefPr__2D27B809" Association="Self.FK__DetailsCo__RefPr__2D27B809">
+            <End Role="Produit" EntitySet="Produit" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsComm__CIN__47DBAE45" Association="Self.FK__DetailsComm__CIN__47DBAE45">
+            <End Role="client" EntitySet="client" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GestionCommande2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="CIN" />
+          </Key>
+          <Property Name="CIN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Ville" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Commande" Relationship="Self.FK__Commande__CIN__286302EC" FromRole="client" ToRole="Commande" />
+          <NavigationProperty Name="DetailsCommande" Relationship="Self.FK__DetailsComm__CIN__47DBAE45" FromRole="client" ToRole="DetailsCommande" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="Num_cmd" />
+          </Key>
+          <Property Name="Num_cmd" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CIN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Datecmd" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="client" Relationship="Self.FK__Commande__CIN__286302EC" FromRole="Commande" ToRole="client" />
+          <NavigationProperty Name="DetailsCommande" Relationship="Self.FK__DetailsCo__Num_c__2C3393D0" FromRole="Commande" ToRole="DetailsCommande" />
+        </EntityType>
+        <EntityType Name="connextion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Utilisateur" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MotdePasse" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Produit">
+          <Key>
+            <PropertyRef Name="Refproduit" />
+          </Key>
+          <Property Name="Refproduit" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Intitule" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Categorie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PrixVente" Type="Decimal" Precision="5" Scale="2" />
+          <NavigationProperty Name="DetailsCommande" Relationship="Self.FK__DetailsCo__RefPr__2D27B809" FromRole="Produit" ToRole="DetailsCommande" />
+        </EntityType>
+        <EntityType Name="DetailsCommande">
+          <Key>
+            <PropertyRef Name="Num_cmd" />
+            <PropertyRef Name="RefProduit" />
+            <PropertyRef Name="Quantite" />
+            <PropertyRef Name="CIN" />
+          </Key>
+          <Property Name="Num_cmd" Type="Int32" Nullable="false" />
+          <Property Name="RefProduit" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="CIN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="client" Relationship="Self.FK__DetailsComm__CIN__47DBAE45" FromRole="DetailsCommande" ToRole="client" />
+          <NavigationProperty Name="Commande" Relationship="Self.FK__DetailsCo__Num_c__2C3393D0" FromRole="DetailsCommande" ToRole="Commande" />
+          <NavigationProperty Name="Produit" Relationship="Self.FK__DetailsCo__RefPr__2D27B809" FromRole="DetailsCommande" ToRole="Produit" />
+        </EntityType>
+        <Association Name="FK__Commande__CIN__286302EC">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="CIN" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="CIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsComm__CIN__47DBAE45">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="CIN" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="CIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsCo__Num_c__2C3393D0">
+          <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="Num_cmd" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="Num_cmd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetailsCo__RefPr__2D27B809">
+          <End Role="Produit" Type="Self.Produit" Multiplicity="1" />
+          <End Role="DetailsCommande" Type="Self.DetailsCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produit">
+              <PropertyRef Name="Refproduit" />
+            </Principal>
+            <Dependent Role="DetailsCommande">
+              <PropertyRef Name="RefProduit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestionCommande" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="client" EntityType="Self.client" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" />
+          <EntitySet Name="connextion" EntityType="Self.connextion" />
+          <EntitySet Name="Produit" EntityType="Self.Produit" />
+          <EntitySet Name="DetailsCommande" EntityType="Self.DetailsCommande" />
+          <AssociationSet Name="FK__Commande__CIN__286302EC" Association="Self.FK__Commande__CIN__286302EC">
+            <End Role="client" EntitySet="client" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsComm__CIN__47DBAE45" Association="Self.FK__DetailsComm__CIN__47DBAE45">
+            <End Role="client" EntitySet="client" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsCo__Num_c__2C3393D0" Association="Self.FK__DetailsCo__Num_c__2C3393D0">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetailsCo__RefPr__2D27B809" Association="Self.FK__DetailsCo__RefPr__2D27B809">
+            <End Role="Produit" EntitySet="Produit" />
+            <End Role="DetailsCommande" EntitySet="DetailsCommande" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GestionCommande2ModelStoreContainer" CdmEntityContainer="GestionCommande">
+          <EntitySetMapping Name="client">
+            <EntityTypeMapping TypeName="GestionCommande2Model.client">
+              <MappingFragment StoreEntitySet="client">
+                <ScalarProperty Name="CIN" ColumnName="CIN" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commande">
+            <EntityTypeMapping TypeName="GestionCommande2Model.Commande">
+              <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="Num_cmd" ColumnName="Num_cmd" />
+                <ScalarProperty Name="CIN" ColumnName="CIN" />
+                <ScalarProperty Name="Datecmd" ColumnName="Datecmd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="connextion">
+            <EntityTypeMapping TypeName="GestionCommande2Model.connextion">
+              <MappingFragment StoreEntitySet="connextion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Utilisateur" ColumnName="Utilisateur" />
+                <ScalarProperty Name="MotdePasse" ColumnName="MotdePasse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Produit">
+            <EntityTypeMapping TypeName="GestionCommande2Model.Produit">
+              <MappingFragment StoreEntitySet="Produit">
+                <ScalarProperty Name="Refproduit" ColumnName="Refproduit" />
+                <ScalarProperty Name="Intitule" ColumnName="Intitule" />
+                <ScalarProperty Name="Categorie" ColumnName="Categorie" />
+                <ScalarProperty Name="PrixVente" ColumnName="PrixVente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetailsCommande">
+            <EntityTypeMapping TypeName="GestionCommande2Model.DetailsCommande">
+              <MappingFragment StoreEntitySet="DetailsCommande">
+                <ScalarProperty Name="Num_cmd" ColumnName="Num_cmd" />
+                <ScalarProperty Name="RefProduit" ColumnName="RefProduit" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="CIN" ColumnName="CIN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

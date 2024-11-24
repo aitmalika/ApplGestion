@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6719669e2af24008841c95befa489f8d" Name="Diagram1">
+        <EntityTypeShape EntityType="GestionCommande2Model.client" Width="1.5" PointX="1.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionCommande2Model.Commande" Width="1.5" PointX="3.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionCommande2Model.connextion" Width="1.5" PointX="5.625" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionCommande2Model.Produit" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionCommande2Model.DetailsCommande" Width="1.5" PointX="7.25" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="GestionCommande2Model.FK__Commande__CIN__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionCommande2Model.FK__DetailsComm__CIN__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionCommande2Model.FK__DetailsCo__Num_c__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionCommande2Model.FK__DetailsCo__RefPr__2D27B809" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
